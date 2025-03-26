@@ -1,6 +1,6 @@
 import UIKit
 
-class NetworkManager {
+class NetworkManager: NetworkDataProvider {
     private let endpoint = "https://reqres.in/api/users"
     private let decoder = JSONDecoder()
     private let cache = NSCache<NSString, UIImage>()

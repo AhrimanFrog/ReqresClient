@@ -2,8 +2,8 @@ import Foundation
 
 struct PageData: Codable {
     let page: Int
-    let per_page: Int
+    let perPage: Int
     let total: Int
-    let total_pages: Int
-    let data: [User]
+    let totalPages: Int
+    let data: [User.UserData]
 }

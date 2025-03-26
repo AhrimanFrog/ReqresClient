@@ -14,5 +14,5 @@ struct User: Codable {
     }
 
     let data: UserData
-    let support: Support?
+//    let support: Support?
 }

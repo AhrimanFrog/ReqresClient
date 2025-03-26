@@ -1,11 +1,14 @@
 import SwiftUI
 
 struct UsersView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @StateObject private var viewModel = UsersViewModel(dataProvider: NetworkManager())
 
-#Preview {
-    UsersView()
+    var body: some View {
+        List(viewModel.users, id: \.id) { data in
+            UserCell(source: data)
+        }
+        .onAppear {
+            viewModel.fetchUsers()
+        }
+    }
 }
