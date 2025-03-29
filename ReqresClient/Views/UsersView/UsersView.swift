@@ -4,11 +4,26 @@ struct UsersView: View {
     @StateObject private var viewModel = UsersViewModel(dataProvider: NetworkManager())
 
     var body: some View {
-        List(viewModel.users, id: \.id) { data in
-            UserCell(source: data)
-        }
-        .onAppear {
-            viewModel.fetchUsers()
+        NavigationStack {
+            ScrollView {
+                LazyVStack {
+                    ForEach(viewModel.users, id: \.id) { user in
+                        UserCell(source: user)
+                            .frame(width: 300, alignment: .leading)
+                            .onAppear {
+                                if user.id == viewModel.users.last?.id {
+                                    viewModel.fetchUsers()
+                                }
+                            }
+                            .onTapGesture {
+                                print()
+                            }
+                    }
+                }
+            }
+            .refreshable {
+                viewModel.refresh()
+            }
         }
     }
 }

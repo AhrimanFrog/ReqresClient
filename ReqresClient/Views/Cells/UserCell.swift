@@ -1,12 +1,14 @@
 import SwiftUI
 
 struct UserCell: View {
-    let source: User.UserData
+    var source: User.UserData
 
     var body: some View {
         HStack {
             AsyncImage(url: URL(string: source.avatar))
+                .frame(width: 150, height: 150)
                 .clipShape(Circle())
+                .frame(alignment: .leading)
             VStack(alignment: .leading) {
                 Text("\(source.firstName) \(source.lastName)")
                     .foregroundStyle(.primary)
@@ -18,13 +20,5 @@ struct UserCell: View {
 }
 
 #Preview {
-    UserCell(
-        source: .init(
-            id: 7,
-            email: "michael.lawson@reqres.in",
-            firstName: "Michael",
-            lastName: "Lawson",
-            avatar: "https://reqres.in/img/faces/7-image.jpg"
-        )
-    )
+    UserCell(source: .init(id: 1, email: "kuk.con", firstName: "Kuk", lastName: "ivanovich", avatar: "https://reqres.in/img/faces/8-image.jpg"))
 }

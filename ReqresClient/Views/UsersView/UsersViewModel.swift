@@ -16,8 +16,9 @@ final class UsersViewModel<DP: NetworkDataProvider>: ObservableObject {
         fetchUsers()
     }
 
+    private var isMoreContent: Bool { currentPage <= totalPages || totalPages == 0 }
+
     func fetchUsers() {
-        let isMoreContent = currentPage < totalPages || totalPages == 0
         guard !isLoading && isMoreContent else { return }
         isLoading.toggle()
         Task {
@@ -27,9 +28,17 @@ final class UsersViewModel<DP: NetworkDataProvider>: ObservableObject {
                 totalPages = pageData.totalPages
                 DispatchQueue.main.async { [weak self] in self?.users.append(contentsOf: pageData.data) }
             } catch {
+                print(error.localizedDescription)
                 errorNotifier.send(error)
             }
             isLoading.toggle()
         }
+    }
+
+    func refresh() {
+        guard !isLoading else { return }
+        currentPage = 1
+        users.removeAll()
+        fetchUsers()
     }
 }

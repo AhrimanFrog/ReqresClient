@@ -3,12 +3,11 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            Tab("Users", systemImage: "person.2.fill") {
-                UsersView()
-            }
-            Tab("Favorites", systemImage: "star.fill") {
-                FavoritesView()
-            }
+            UsersView()
+                .tabItem { Label("Users", systemImage: "person.2.fill") }
+
+            FavoritesView()
+                .tabItem { Label("Favorites", systemImage: "star.fill") }
         }
     }
 }
