@@ -2,28 +2,35 @@ import SwiftUI
 
 struct UsersView: View {
     @StateObject private var viewModel = UsersViewModel(dataProvider: NetworkManager())
+    @State private var showingAlert = false
+    @State private var errorMessage = ""
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                LazyVStack {
-                    ForEach(viewModel.users, id: \.id) { user in
-                        UserCell(source: user)
-                            .frame(width: 300, alignment: .leading)
-                            .onAppear {
-                                if user.id == viewModel.users.last?.id {
-                                    viewModel.fetchUsers()
-                                }
-                            }
-                            .onTapGesture {
-                                print()
-                            }
+                UsersList(data: viewModel.users, state: viewModel.state) { userID in
+                    if viewModel.users.last?.id == userID {
+                        viewModel.fetchUsers()
+                    }
+                }
+                .onReceive(viewModel.$state) { newState in
+                    switch newState {
+                    case .error(let error):
+                        showingAlert = true
+                        errorMessage = error.localizedDescription
+                    default:
+                        showingAlert = false
+                        errorMessage = ""
                     }
                 }
             }
-            .refreshable {
-                viewModel.refresh()
-            }
+        .alert(
+            "Oops!",
+            isPresented: $showingAlert,
+            actions: { Button("OK", role: .cancel) { showingAlert = false } },
+            message: { Text(errorMessage) }
+        )
+        .refreshable {
+            viewModel.refresh()
         }
     }
 }

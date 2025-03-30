@@ -5,10 +5,8 @@ struct UserCell: View {
 
     var body: some View {
         HStack {
-            AsyncImage(url: URL(string: source.avatar))
-                .frame(width: 150, height: 150)
-                .clipShape(Circle())
-                .frame(alignment: .leading)
+            UserImage(source: source.avatar)
+                .frame(width: 80, height: 80, alignment: .leading)
             VStack(alignment: .leading) {
                 Text("\(source.firstName) \(source.lastName)")
                     .foregroundStyle(.primary)
@@ -20,5 +18,5 @@ struct UserCell: View {
 }
 
 #Preview {
-    UserCell(source: .init(id: 1, email: "kuk.con", firstName: "Kuk", lastName: "ivanovich", avatar: "https://reqres.in/img/faces/8-image.jpg"))
+    UserCell(source: .example)
 }
