@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct UsersView: View {
-    @StateObject private var viewModel = UsersViewModel(dataProvider: NetworkManager.shared)
+    @StateObject var viewModel: UsersViewModel<NetworkManager>
     @State private var showingAlert = false
     @State private var errorMessage = ""
 

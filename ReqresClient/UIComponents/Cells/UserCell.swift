@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct UserCell: View {
-    var source: UserData
+    let source: UserData
 
     var body: some View {
         HStack {

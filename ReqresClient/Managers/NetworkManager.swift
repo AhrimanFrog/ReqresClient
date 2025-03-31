@@ -5,9 +5,7 @@ class NetworkManager: NetworkDataProvider {
     private let decoder = JSONDecoder()
     private let cache = NSCache<NSString, UIImage>()
 
-    static let shared = NetworkManager()
-
-    private init() {
+    init() {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 

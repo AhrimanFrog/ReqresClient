@@ -1,30 +1,33 @@
 import Combine
 import Foundation
 
+@MainActor
 final class UserDetailsViewModel<DP: NetworkDataProvider>: ObservableObject {
     @Published var userData: UserData
     @Published var supportText: Support = .init(text: "Loading...")
-    private let persistanceManager: PersistanceManager
+    private let persistanceManager: PersistanceManager?
+    private let dataProvider: DP
 
-    init(userDataProvider: DP, userData: UserData) {
+    init(userDataProvider: DP, persistanceManager: PersistanceManager?, userData: UserData) {
+        dataProvider = userDataProvider
         self.userData = userData
-        self.persistanceManager = try! PersistanceManager()
-        Task { [weak self] in
-            let text = try await userDataProvider.getUserSupportText(byID: userData.id)
-            DispatchQueue.main.async { self?.supportText = text }
-        }
+        self.persistanceManager = persistanceManager
     }
 
-    func userIsFavored(data: UserData) -> Bool {
-        return persistanceManager.getUsers().contains { $0.data.id == data.id }
+    func updateText() async {
+        supportText = (try? await dataProvider.getUserSupportText(byID: userData.id)) ?? .init(text: "No text")
+    }
+
+    func userIsFavored() -> Bool {
+        return persistanceManager?.getUsers().contains { $0.data.id == userData.id } ?? false
     }
 
     func persistUserInDatabase(new: Bool) {
         let user = User(data: userData, support: supportText)
         if new {
-            try? persistanceManager.add(newUser: user)
+            try? persistanceManager?.add(newUser: user)
         } else {
-            try? persistanceManager.remove(user: user)
+            try? persistanceManager?.remove(user: user)
         }
     }
 }

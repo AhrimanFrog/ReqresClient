@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FavorButton: View {
-    @State var isFavored = false
+    @Binding var isFavored: Bool
     var customAction: (Bool) -> Void
 
     var body: some View {
@@ -27,11 +27,5 @@ struct FavorButton: View {
             }
         )
         .animation(.easeInOut, value: isFavored)
-    }
-}
-
-struct FavorButton_Previews: PreviewProvider {
-    static var previews: some View {
-        FavorButton { _ in }
     }
 }

@@ -17,6 +17,7 @@ enum UserViewState: Equatable {
 }
 
 
+@MainActor
 final class UsersViewModel<DP: NetworkDataProvider>: ObservableObject {
     @Published var users: [UserData] = []
     @Published var state: UserViewState = .idle
@@ -39,14 +40,10 @@ final class UsersViewModel<DP: NetworkDataProvider>: ObservableObject {
                 let pageData = try await dataProvider.fetchUsers(forPage: currentPage)
                 currentPage += 1
                 totalPages = pageData.totalPages
-                DispatchQueue.main.async { [weak self] in
-                    self?.users.append(contentsOf: pageData.data)
-                    self?.state = .idle
-                }
+                users.append(contentsOf: pageData.data)
+                state = .idle
             } catch {
-                DispatchQueue.main.async { [weak self] in
-                    self?.state = .error(error)
-                }
+                state = .error(error)
             }
         }
     }

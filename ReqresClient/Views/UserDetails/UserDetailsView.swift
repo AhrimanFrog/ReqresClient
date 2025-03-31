@@ -2,13 +2,10 @@ import SwiftUI
 
 struct UserDetailsView: View {
     @StateObject var viewModel: UserDetailsViewModel<NetworkManager>
-    private let userData: UserData
+    @State var isFavored: Bool = false
 
-    init(networkManager: NetworkManager, data: UserData) {
-        _viewModel = StateObject(
-            wrappedValue: UserDetailsViewModel(userDataProvider: networkManager, userData: data)
-        )
-        userData = data
+    init(viewModel: UserDetailsViewModel<NetworkManager>) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -23,14 +20,12 @@ struct UserDetailsView: View {
             .font(.title3)
             .padding(.horizontal)
             .offset(.init(width: 0, height: 50))
+            .task { await viewModel.updateText() }
         Spacer()
-        FavorButton(isFavored: viewModel.userIsFavored(data: userData)) { favored in
+        FavorButton(isFavored: $isFavored) { favored in
             viewModel.persistUserInDatabase(new: favored)
         }
+        .onAppear { isFavored = viewModel.userIsFavored() }
         Spacer()
     }
-}
-
-#Preview {
-    UserDetailsView(networkManager: .shared, data: .example)
 }

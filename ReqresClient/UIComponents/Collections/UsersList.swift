@@ -15,11 +15,11 @@ struct UsersList: View {
                     }
                 }
             }
+            .navigationDestination(for: UserData.self) { userData in
+                Repository.shared.build(screen: .details(userData))
+            }
             .navigationTitle("Users")
             .listStyle(.inset)
-            .navigationDestination(for: UserData.self) { userData in
-                UserDetailsView(networkManager: .shared, data: userData)
-            }
 
             if state == .loading {
                 ProgressView()

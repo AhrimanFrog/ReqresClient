@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    @StateObject var viewModel = FavoritesViewModel()
+    @StateObject var viewModel: FavoritesViewModel
 
     var body: some View {
         List {
@@ -10,9 +10,10 @@ struct FavoritesView: View {
             }
             .onDelete(perform: viewModel.deleteUser(at:))
         }
+        .onAppear { viewModel.updateUsers() }
     }
 }
 
 #Preview {
-    FavoritesView()
+    FavoritesView(viewModel: .init(persistanceManager: try? .init()))
 }
