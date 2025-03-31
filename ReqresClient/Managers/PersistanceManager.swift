@@ -21,6 +21,9 @@ class PersistanceManager {
     }
 
     func remove(user: User) throws {
-        try realm.write { realm.delete(user.managedObject()) }
+        guard let realmUser = realm.objects(UserObject.self).first(where: { $0.data?.id == user.data.id }) else {
+            return
+        }
+        try realm.write { realm.delete(realmUser) }
     }
 }
