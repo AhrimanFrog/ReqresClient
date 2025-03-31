@@ -1,8 +1,15 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    @StateObject var viewModel = FavoritesViewModel()
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(viewModel.users, id: \.data.id) { user in
+                UserCell(source: user.data)
+            }
+            .onDelete(perform: viewModel.deleteUser(at:))
+        }
     }
 }
 
