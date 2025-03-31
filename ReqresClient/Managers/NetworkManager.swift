@@ -5,7 +5,9 @@ class NetworkManager: NetworkDataProvider {
     private let decoder = JSONDecoder()
     private let cache = NSCache<NSString, UIImage>()
 
-    init() {
+    static let shared = NetworkManager()
+
+    private init() {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
     }
 
@@ -13,8 +15,8 @@ class NetworkManager: NetworkDataProvider {
         return try await fetchData(request: endpoint + "?page=\(page)", type: PageData.self)
     }
 
-    func getUserInfo(byID userID: Int) async throws -> User {
-        return try await fetchData(request: endpoint + "/\(userID)", type: User.self)
+    func getUserSupportText(byID userID: Int) async throws -> Support {
+        return try await fetchData(request: endpoint + "/\(userID)", type: User.self).support
     }
 
     private func fetchData<T: Codable>(request: String, type: T.Type) async throws -> T {

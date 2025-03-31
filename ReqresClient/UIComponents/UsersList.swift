@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct UsersList: View {
-    var data: [User.UserData]
+    var data: [UserData]
     var state: UserViewState
     var fetchMore: (Int) -> Void
 
@@ -17,6 +17,9 @@ struct UsersList: View {
             }
             .navigationTitle("Users")
             .listStyle(.inset)
+            .navigationDestination(for: UserData.self) { userData in
+                UserDetailsView(networkManager: .shared, data: userData)
+            }
 
             if state == .loading {
                 ProgressView()

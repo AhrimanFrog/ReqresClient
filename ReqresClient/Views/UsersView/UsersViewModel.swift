@@ -18,7 +18,7 @@ enum UserViewState: Equatable {
 
 
 final class UsersViewModel<DP: NetworkDataProvider>: ObservableObject {
-    @Published var users: [User.UserData] = []
+    @Published var users: [UserData] = []
     @Published var state: UserViewState = .idle
     let dataProvider: DP
 

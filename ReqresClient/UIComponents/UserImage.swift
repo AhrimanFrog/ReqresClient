@@ -17,7 +17,7 @@ struct UserImage: View {
                     .resizable()
                     .scaledToFit()
             @unknown default:
-                fatalError()
+                fatalError("State is not implemented")
             }
         }
         .clipShape(Circle())

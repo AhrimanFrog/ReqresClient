@@ -1,3 +1,10 @@
 import Foundation
+import RealmSwift
 
-class PersistanceManager {}
+class PersistanceManager {
+    private let realm: Realm
+
+    init() throws {
+        realm = try Realm()
+    }
+}

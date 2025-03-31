@@ -5,5 +5,5 @@ struct PageData: Codable {
     let perPage: Int
     let total: Int
     let totalPages: Int
-    let data: [User.UserData]
+    let data: [UserData]
 }

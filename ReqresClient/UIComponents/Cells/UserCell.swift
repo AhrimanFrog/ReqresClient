@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct UserCell: View {
-    var source: User.UserData
+    var source: UserData
 
     var body: some View {
         HStack {
             UserImage(source: source.avatar)
                 .frame(width: 80, height: 80, alignment: .leading)
             VStack(alignment: .leading) {
-                Text("\(source.firstName) \(source.lastName)")
+                Text(source.fullName)
                     .foregroundStyle(.primary)
                 Text(source.email)
                     .foregroundStyle(.secondary)
