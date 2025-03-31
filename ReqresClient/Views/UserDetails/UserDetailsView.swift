@@ -2,11 +2,13 @@ import SwiftUI
 
 struct UserDetailsView: View {
     @StateObject var viewModel: UserDetailsViewModel<NetworkManager>
+    private let userData: UserData
 
     init(networkManager: NetworkManager, data: UserData) {
         _viewModel = StateObject(
             wrappedValue: UserDetailsViewModel(userDataProvider: networkManager, userData: data)
         )
+        userData = data
     }
 
     var body: some View {
@@ -21,6 +23,10 @@ struct UserDetailsView: View {
             .font(.title3)
             .padding(.horizontal)
             .offset(.init(width: 0, height: 50))
+        Spacer()
+        FavorButton(isFavored: viewModel.userIsFavored(data: userData)) { favored in
+            viewModel.persistUserInDatabase(new: favored)
+        }
         Spacer()
     }
 }

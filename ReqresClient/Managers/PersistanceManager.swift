@@ -4,7 +4,23 @@ import RealmSwift
 class PersistanceManager {
     private let realm: Realm
 
-    init() throws {
-        realm = try Realm()
+    convenience init() throws {
+        try self.init(realm: Realm())
+    }
+
+    init(realm: Realm) {
+        self.realm = realm
+    }
+
+    func add(newUser: User) throws {
+        try realm.write { realm.add(newUser.managedObject()) }
+    }
+
+    func getUsers() -> [User] {
+        return realm.objects(UserObject.self).map { .init(managedObject: $0) }
+    }
+
+    func remove(user: User) throws {
+        try realm.write { realm.delete(user.managedObject()) }
     }
 }

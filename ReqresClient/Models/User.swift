@@ -1,30 +1,15 @@
-import Foundation
-
-struct UserData: Codable, Hashable {
-    let id: Int
-    let email: String
-    let firstName: String
-    let lastName: String
-    let avatar: String
-
-    var fullName: String { "\(firstName) \(lastName)" }
-
-    static var example: UserData {
-        .init(
-            id: 1,
-            email: "kuk.con",
-            firstName: "Kuk",
-            lastName: "ivanovich",
-            avatar: "https://reqres.in/img/faces/8-image.jpg"
-        )
-    }
-}
-
-struct Support: Codable {
-    let text: String
-}
-
 struct User: Codable {
     let data: UserData
     let support: Support
+}
+
+extension User: Persistable {
+    init(managedObject: UserObject) {
+        data = .init(managedObject: managedObject.data!)
+        support = .init(managedObject: managedObject.support!)
+    }
+
+    func managedObject() -> UserObject {
+        return UserObject(data: data, support: support)
+    }
 }

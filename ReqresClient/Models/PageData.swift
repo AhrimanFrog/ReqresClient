@@ -1,5 +1,3 @@
-import Foundation
-
 struct PageData: Codable {
     let page: Int
     let perPage: Int
